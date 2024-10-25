@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>DWEC PRACTICA 1 FORMULARIO</title>
+<meta charset="UTF-8">
+</head>
+
+<body>
+    <h1>DWEC PRACTICA 1 FORMULARIO</h1>
+
+        <!-- Enlaces del site-->
+        <a id="inicio" href="home.html">Inicio</a>
+        <a id="Formulario" href="formulario.html">Formulario</a>
+        <a id="Tabla" href="tablas.html">Tabla</a>
+        <a id="Mas_info" href="mas_info.html">Mas_info</a>
+        <a id="Resumen" href="resumen.html">Resumen</a>
+
+    </br>
+    </br>
+
+    <form  method="post" enctype=“multipart/form-data” action="./ws/crearUsuario.php">
+        <fieldset>
+            <legend><strong>DATOS PERSONALES</strong></legend>
+            <table>
+                <tr>
+                    <td>Nombre:</td>
+                    <td><input type="text" name="name" placeholder="Nombre" required></td>
+                </tr>
+                <tr>
+                    <td>Apellidos:</td>
+                    <td><input type="text" name="surname" placeholder="Apellidos" required></td>
+                </tr>
+                <tr>
+                    <td>Contraseña:</td>
+                    <td><input type="password" name="pass" placeholder="Contraseña" required></td>
+                </tr>
+                <tr>
+                    <td>Teléfono:</td>
+                    <!--Tipo number en el telefono para que solo acepte numeros-->
+                    <td><input type="tel" name="phone" placeholder="0123456789" pattern="[0-9]{9}" required></td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td><input type="email" name="email" placeholder="Email" required></td>
+                </tr>
+                <tr>
+                    <td>Género:</td>
+                    <!--Se usa el mismo name en los radioButton para forzar que sea mutuamente excluyente-->
+                    <td>
+                    <label><input type="radio" id="r1" name="genero">Masculino</label>
+                    <label><input type="radio" id="r2" name="genero">Femenino</label></br>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </br>
+        <input type="submit" value="Enviar">
+    </form>
+    </br>
+    <footer>Esto es un footer del formulario</footer>
+</body>
+</html>
