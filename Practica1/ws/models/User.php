@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  clase User
+ *  clas User implements 
  */
 
  require_once"./interfaces/IToJson.php"; 
@@ -30,7 +30,6 @@ class User implements IToJson
         $this->surname = $surname;
     }
 
-
     public function getPassword(){
         return $this->password;
     }
@@ -47,7 +46,6 @@ class User implements IToJson
         $this->phone = $phone;
     }
 
-    /*
     public function getGender(){
         return $this->gender;
     }
@@ -55,21 +53,16 @@ class User implements IToJson
     public function setGender($gender) {
         $this->gender = $gender;
     }
-        */
 
     public function toJson(){
-        // Convertimos el objeto en un array y luego a JSON
+        //User object converted to JSON adn returned
         $userData = [
             'name' => $this->name,
             'surname' => $this->surname,
             'phone' => $this->phone,
             'password' => $this->password,
-            //'gender' => $this->gender
+            'gender' => $this->gender
         ];
         return json_encode($userData);
-
     }
-
- 
-
 }

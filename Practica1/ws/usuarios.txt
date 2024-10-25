@@ -1,6 +1,3 @@
 
-
-
-{"name":"Jose","surname":"Gomez","phone":"655643984","password":null}
-{"name":"Jose","surname":"Gomez","phone":"655643984","password":null}
-{"name":"Jose1","surname":"Gomez1","phone":"655643985","password":null}
+{"name":"pepe6","surname":"garcia6","phone":"655643986","password":null,"gender":"Masculino"}
+{"name":"pepe7","surname":"garcia7","phone":"655643987","password":null,"gender":"Femenino"}
