@@ -1,13 +1,11 @@
 <?php
+// Iniciar sesión para asegurar acceso a la sesión en caso de que sea necesario en el futuro
 session_start();
 require_once "./models/User.php"; 
 require_once "./interfaces/IToJson.php"; 
 require_once "./conexion.php"; 
 
 header('Content-Type: application/json');
-
-// Iniciar sesión para asegurar acceso a la sesión en caso de que sea necesario en el futuro
-
 
 // Verificar que los parámetros POST están definidos
 if (isset($_SESSION['form_data'])) {
@@ -16,7 +14,6 @@ if (isset($_SESSION['form_data'])) {
   $surname = $formData['surname'] ?? null;
   $password = $formData['pass'] ?? null;
   $id = $formData['id'] ?? null;
-  var_dump($formData);
 
     try {
         // Crear la instancia de conexión
@@ -26,7 +23,7 @@ if (isset($_SESSION['form_data'])) {
         exit();
     }
 
-    // Llamar a la función de consulta
+    // Llamar a la función de consulta que corresponda si ID viene informado o no
     if($id){
       $result = consultarAlumnoPorID($conexion, $id);
     }else{
@@ -42,7 +39,7 @@ if (isset($_SESSION['form_data'])) {
 }
 
 /**
- * Función para consultar el alumno en la base de datos usando consultas preparadas
+ * Funciones para consultar el alumno en la base de datos usando consultas preparadas bien por ID o bien por los campos nombre, apellidos y contrasenya
  */
 function consultarAlumno($conexion, $name, $surname, $pass) {
     try {
@@ -55,10 +52,6 @@ function consultarAlumno($conexion, $name, $surname, $pass) {
         $stmt->bindParam(':apellidos', $surname, PDO::PARAM_STR);
         $stmt->bindParam(':password', $pass, PDO::PARAM_STR);
 
-        // Para depuración (opcional): Mostrar la consulta y los valores
-        //var_dump("Consulta ejecutada:", $sql);
-        //echo "La consulta es: SELECT * FROM alumno WHERE nombre = '$name' AND apellidos = '$surname' AND password = '$pass'";
-
         // Ejecutar la consulta
         $stmt->execute();
         
@@ -67,7 +60,7 @@ function consultarAlumno($conexion, $name, $surname, $pass) {
 
         if (count($result) > 0) {
           // Devolver array de resultados
-         // Extraer solo los campos 'nombre' y 'apellidos' de cada registro
+         // Extraer solo los campos 'ID','nombre' y 'apellidos' de cada registro
          $filteredResult = array_map(function($row) {
           return [
               //Se muestra el id para distinguir resultados multiples
@@ -83,7 +76,7 @@ function consultarAlumno($conexion, $name, $surname, $pass) {
           'data' => $filteredResult
         ];
         } else {
-            return ["message" => "No se encontraron resultados."];
+            return ["message" => "No se encontraron resultados"];
         }
     } catch (Exception $e) {
         http_response_code(500);
@@ -100,10 +93,6 @@ function consultarAlumnoPorID($conexion, $id) {
       // Asociar los parámetros
       $stmt->bindParam(':id', $id, PDO::PARAM_STR);
 
-      // Para depuración (opcional): Mostrar la consulta y los valores
-      //var_dump("Consulta ejecutada:", $sql);
-      //echo "La consulta es: SELECT * FROM alumno WHERE nombre = '$name' AND apellidos = '$surname' AND password = '$pass'";
-
       // Ejecutar la consulta
       $stmt->execute();
       
@@ -111,7 +100,6 @@ function consultarAlumnoPorID($conexion, $id) {
       $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
       if (count($result) > 0) {
-        // Devolver array de resultados
        // Extraer solo los campos 'nombre' y 'apellidos' de cada registro
        $filteredResult = array_map(function($row) {
         return [

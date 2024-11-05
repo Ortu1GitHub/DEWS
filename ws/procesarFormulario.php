@@ -1,5 +1,6 @@
 <?php
-session_start(); // Asegúrate de iniciar la sesión al inicio
+//Se inicia sesion
+session_start(); 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? null;
@@ -11,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $gender = $_POST['gender'] ?? null;
     $id = $_POST['id'] ?? null;
 
-    // Guarda los datos en la sesión temporalmente
+    // Guarda los datos del formulario en $_SESSION
     $_SESSION['form_data'] = $_POST;
 
     if ($action === 'Insertar') {
@@ -29,18 +30,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         echo json_encode(["error" => "Acción no reconocida."]);
     }
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-  $action = $_POST['action'] ?? null;
-  $id = $_POST['id'] ?? null;
-
-    // Guarda los datos en la sesión temporalmente
-    $_SESSION['form_data'] = $_POST;
-
-  if ($action === 'Consultar') {
-    header('Location: ./getUsuario.php');
-    exit();
-  }
 }
 ?>

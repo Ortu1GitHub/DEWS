@@ -1,5 +1,6 @@
 <?php
-session_start(); // Iniciar sesión para acceder a $_SESSION
+// Iniciar sesión para asegurar acceso a la sesión en caso de que sea necesario en el futuro
+session_start(); 
 
 require_once "./models/User.php"; 
 require_once "./interfaces/IToJson.php"; 
@@ -38,7 +39,7 @@ if (isset($_SESSION['form_data'])) {
     // Limpiar los datos de la sesión después de usarlos
     unset($_SESSION['form_data']);
 } else {
-    echo json_encode(['error' => 'No se encontraron datos en la sesión.']);
+    echo json_encode(['error' => 'No se han informados datos para dar de alta el alumno']);
     exit();
 }
 

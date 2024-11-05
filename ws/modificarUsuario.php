@@ -1,13 +1,11 @@
 <?php
+// Iniciar sesión para asegurar acceso a la sesión en caso de que sea necesario en el futuro
 session_start();
 require_once "./models/User.php"; 
 require_once "./interfaces/IToJson.php"; 
 require_once "./conexion.php"; 
 
 header('Content-Type: application/json');
-
-// Iniciar sesión para asegurar acceso a la sesión en caso de que sea necesario en el futuro
-
 
 // Verificar que los parámetros POST están definidos
 if (isset($_SESSION['form_data'])) {
@@ -19,7 +17,6 @@ if (isset($_SESSION['form_data'])) {
   $email = $formData['email'] ?? null;
   $gender = $formData['gender'] ?? null;
   $id = $formData['id'] ?? null;
-  var_dump($formData);
 
     try {
         // Crear la instancia de conexión
@@ -38,14 +35,10 @@ if (isset($_SESSION['form_data'])) {
       $user->setEmail($email);
       $user->setGender($gender);
 
-    // Llamar a la función de borrado
-    //if($id){
+    // Llamar a la función de modificado
       $result = modificarAlumnoPorID($conexion,$user,$id);
-    //}else{
-      //$result = consultarAlumno($conexion, $name, $surname,$password);
-    //}
    
-    echo json_encode($result);
+      echo json_encode($result);
 
     // Limpiar los datos de la sesión después de usarlos
       unset($_SESSION['form_data']);
@@ -54,7 +47,7 @@ if (isset($_SESSION['form_data'])) {
 }
 
 /**
- * Función para consultar el alumno en la base de datos usando consultas preparadas
+ * Función para modificar el alumno en la base de datos usando consultas preparadas y buscando por ID
  */
 
 function modificarAlumnoPorID($conexion,$user,$id) {
@@ -62,7 +55,7 @@ function modificarAlumnoPorID($conexion,$user,$id) {
       // Preparar la consulta
       $sql = "UPDATE alumno set nombre=:nombre, apellidos=:apellidos,password=:password,telefono=:telefono,email=:email,sexo=:gender where id=:id";
       $stmt = $conexion->prepare($sql);
-      var_dump($sql);
+   
              // Almacenar valores en variables
              $nombre = $user->getName();
              $apellidos = $user->getSurname();

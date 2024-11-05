@@ -1,4 +1,5 @@
 <?php
+// Iniciar sesión para asegurar acceso a la sesión en caso de que sea necesario en el futuro
 session_start();
 require_once "./models/User.php"; 
 require_once "./interfaces/IToJson.php"; 
@@ -6,17 +7,10 @@ require_once "./conexion.php";
 
 header('Content-Type: application/json');
 
-// Iniciar sesión para asegurar acceso a la sesión en caso de que sea necesario en el futuro
-
-
 // Verificar que los parámetros POST están definidos
 if (isset($_SESSION['form_data'])) {
   $formData = $_SESSION['form_data'];
-  $name = $formData['name'] ?? null;
-  $surname = $formData['surname'] ?? null;
-  $password = $formData['pass'] ?? null;
   $id = $formData['id'] ?? null;
-  var_dump($formData);
 
     try {
         // Crear la instancia de conexión
@@ -27,22 +21,18 @@ if (isset($_SESSION['form_data'])) {
     }
 
     // Llamar a la función de borrado
-    //if($id){
       $result = eliminarAlumnoPorID($conexion, $id);
-    //}else{
-      //$result = consultarAlumno($conexion, $name, $surname,$password);
-    //}
    
     echo json_encode($result);
 
     // Limpiar los datos de la sesión después de usarlos
       unset($_SESSION['form_data']);
 } else {
-    echo json_encode(["error" => "Por favor, proporciona el nombre, apellidos y password para la consulta."]);
+    echo json_encode(["error" => "Por favor, proporciona el ID para el borrado"]);
 }
 
 /**
- * Función para consultar el alumno en la base de datos usando consultas preparadas
+ * Función para eliminar el alumno en la base de datos usando consultas preparadas y buscando por ID
  */
 
 function eliminarAlumnoPorID($conexion, $id) {
