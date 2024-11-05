@@ -1,9 +1,9 @@
 <?php
 // Iniciar sesión para asegurar acceso a la sesión en caso de que sea necesario en el futuro
 session_start();
-require_once "./models/User.php"; 
-require_once "./interfaces/IToJson.php"; 
-require_once "./conexion.php"; 
+require_once "./models/User.php";
+require_once "./interfaces/IToJson.php";
+require_once "./conexion.php";
 
 header('Content-Type: application/json');
 
@@ -18,84 +18,85 @@ if (isset($_SESSION['form_data'])) {
   $gender = $formData['gender'] ?? null;
   $id = $formData['id'] ?? null;
 
-    try {
-        // Crear la instancia de conexión
-        $conexion = new Conexion();
-    } catch (Exception $e) {
-        echo json_encode(['error' => "Error: " . $e->getMessage()]);
-        exit();
-    }
+  try {
+    // Crear la instancia de conexión
+    $conexion = new Conexion();
+  } catch (Exception $e) {
+    echo json_encode(['error' => "Error: " . $e->getMessage()]);
+    exit();
+  }
 
-      // Crear objeto User con los datos
-      $user = new User();
-      $user->setName($name);
-      $user->setSurname($surname);
-      $user->setPhone($phone);
-      $user->setPassword($password);
-      $user->setEmail($email);
-      $user->setGender($gender);
+  // Crear objeto User con los datos
+  $user = new User();
+  $user->setName($name);
+  $user->setSurname($surname);
+  $user->setPhone($phone);
+  $user->setPassword($password);
+  $user->setEmail($email);
+  $user->setGender($gender);
 
-    // Llamar a la función de modificado
-      $result = modificarAlumnoPorID($conexion,$user,$id);
-   
-      echo json_encode($result);
+  // Llamar a la función de modificado
+  $result = modificarAlumnoPorID($conexion, $user, $id);
 
-    // Limpiar los datos de la sesión después de usarlos
-      unset($_SESSION['form_data']);
+  echo json_encode($result);
+
+  // Limpiar los datos de la sesión después de usarlos
+  unset($_SESSION['form_data']);
 } else {
-    echo json_encode(["error" => "Por favor, proporciona el nombre, apellidos y password para la consulta."]);
+  echo json_encode(["error" => "Por favor, proporciona el nombre, apellidos y password para la consulta."]);
 }
 
 /**
  * Función para modificar el alumno en la base de datos usando consultas preparadas y buscando por ID
  */
 
-function modificarAlumnoPorID($conexion,$user,$id) {
+function modificarAlumnoPorID($conexion, $user, $id)
+{
   try {
-      // Preparar la consulta
-      $sql = "UPDATE alumno set nombre=:nombre, apellidos=:apellidos,password=:password,telefono=:telefono,email=:email,sexo=:gender where id=:id";
-      $stmt = $conexion->prepare($sql);
-   
-             // Almacenar valores en variables
-             $nombre = $user->getName();
-             $apellidos = $user->getSurname();
-             $telefono = $user->getPhone();
-             $password = $user->getPassword();
-             $email = $user->getEmail();
-             $gender = $user->getGender();
-     
-             // Asociar los parámetros
-             $stmt->bindParam(':nombre', $nombre, PDO::PARAM_STR);
-             $stmt->bindParam(':apellidos', $apellidos, PDO::PARAM_STR);
-             $stmt->bindParam(':telefono', $telefono, PDO::PARAM_STR);
-             $stmt->bindParam(':password', $password, PDO::PARAM_STR);
-             $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-             $stmt->bindParam(':gender', $gender, PDO::PARAM_STR);
-            $stmt->bindParam(':id', $id, PDO::PARAM_STR);
+    // Preparar la consulta
+    $sql = "UPDATE alumno set nombre=:nombre, apellidos=:apellidos,password=:password,telefono=:telefono,email=:email,sexo=:gender where id=:id";
+    $stmt = $conexion->prepare($sql);
 
-      // Ejecutar la consulta
-      $stmt->execute();
-      
-      // Obtener todos los resultados como un array asociativo
-      $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      var_dump($result);
+    // Almacenar valores en variables
+    $nombre = $user->getName();
+    $apellidos = $user->getSurname();
+    $telefono = $user->getPhone();
+    $password = $user->getPassword();
+    $email = $user->getEmail();
+    $gender = $user->getGender();
 
-      // Comprobar si se afectó alguna fila
-      if ($stmt->rowCount()== 1) {
-        return [
-            'success' => true,
-            'message' => "Usuario con ID ".$id." modificado con exito",
-        ];
+    // Asociar los parámetros
+    $stmt->bindParam(':nombre', $nombre, PDO::PARAM_STR);
+    $stmt->bindParam(':apellidos', $apellidos, PDO::PARAM_STR);
+    $stmt->bindParam(':telefono', $telefono, PDO::PARAM_STR);
+    $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+    $stmt->bindParam(':gender', $gender, PDO::PARAM_STR);
+    $stmt->bindParam(':id', $id, PDO::PARAM_STR);
+
+    // Ejecutar la consulta
+    $stmt->execute();
+
+    // Obtener todos los resultados como un array asociativo
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    var_dump($result);
+
+    // Comprobar si se afectó alguna fila
+    if ($stmt->rowCount() == 1) {
+      return [
+        'success' => true,
+        'message' => "Usuario con ID " . $id . " modificado con exito",
+      ];
     } else {
-        return [
-            'success' => false,
-            'message' => "Usuario con ID ".$id." no encontrado",
-        ];
+      return [
+        'success' => false,
+        'message' => "Usuario con ID " . $id . " no encontrado",
+      ];
     }
-      
+
   } catch (Exception $e) {
-      http_response_code(500);
-      return ['error' => $e->getMessage()];
-  } 
+    http_response_code(500);
+    return ['error' => $e->getMessage()];
+  }
 }
 ?>

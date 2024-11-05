@@ -1,10 +1,10 @@
 <?php
 // Iniciar sesión para asegurar acceso a la sesión en caso de que sea necesario en el futuro
-session_start(); 
+session_start();
 
-require_once "./models/User.php"; 
-require_once "./interfaces/IToJson.php"; 
-require_once "./conexion.php"; 
+require_once "./models/User.php";
+require_once "./interfaces/IToJson.php";
+require_once "./conexion.php";
 
 // Verificar que haya datos en la sesión
 if (isset($_SESSION['form_data'])) {
@@ -43,7 +43,8 @@ if (isset($_SESSION['form_data'])) {
     exit();
 }
 
-function insertarAlumno($conexion, $user) {
+function insertarAlumno($conexion, $user)
+{
     try {
         $sql = "INSERT INTO alumno (nombre, apellidos, telefono, password,email,sexo) VALUES (:nombre, :apellidos, :telefono, :password,:email,:gender)";
         $stmt = $conexion->prepare($sql);
@@ -68,13 +69,13 @@ function insertarAlumno($conexion, $user) {
         $stmt->execute();
 
         return [
-          'success' => true,
-          'message' => "Usuario creado con exito",
-          'data' => [
-              'nombre' => $nombre,
-              'apellidos' => $apellidos
-          ]
-      ];
+            'success' => true,
+            'message' => "Usuario creado con exito",
+            'data' => [
+                'nombre' => $nombre,
+                'apellidos' => $apellidos
+            ]
+        ];
     } catch (Exception $e) {
         http_response_code(500);
         return ['error' => $e->getMessage()];

@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>DWES PRACTICA MYSQL FORMULARIO</title>
-<meta charset="UTF-8">
+    <title>DWES PRACTICA MYSQL FORMULARIO</title>
+    <meta charset="UTF-8">
 </head>
 
 <body>
     <h1>DWES PRACTICA MYSQL FORMULARIO</h1>
 
-        <!-- Enlaces del site-->
-        <a id="inicio" href="home.html">Inicio</a>
-        <a id="Formulario" href="formulario.html">Formulario</a>
-        <a id="Tabla" href="tablas.html">Tabla</a>
-        <a id="Mas_info" href="mas_info.html">Mas_info</a>
-        <a id="Resumen" href="resumen.html">Resumen</a>
+    <!-- Enlaces del site-->
+    <a id="inicio" href="home.html">Inicio</a>
+    <a id="Formulario" href="formulario.html">Formulario</a>
+    <a id="Tabla" href="tablas.html">Tabla</a>
+    <a id="Mas_info" href="mas_info.html">Mas_info</a>
+    <a id="Resumen" href="resumen.html">Resumen</a>
 
     </br>
     </br>
 
-    <form  method="post" enctype="multipart/form-data" action="./ws/procesarFormulario.php">
+    <form method="post" enctype="multipart/form-data" action="./ws/procesarFormulario.php">
         <fieldset>
             <legend><strong>DATOS PERSONALES</strong></legend>
             <table>
@@ -48,8 +49,8 @@
                     <!--Se usa el mismo name en los radioButton para forzar que sea mutuamente excluyente
                     Se usa el atributo value para indicar el radioButton clicado en crearUsuario.php-->
                     <td>
-                    <label><input type="radio"  name="gender" value="Masculino">Masculino</label>
-                    <label><input type="radio"  name="gender" value="Femenino">Femenino</label></br>
+                        <label><input type="radio" name="gender" value="Masculino">Masculino</label>
+                        <label><input type="radio" name="gender" value="Femenino">Femenino</label></br>
                     </td>
                 </tr>
                 <tr>
@@ -58,13 +59,15 @@
                 </tr>
             </table>
         </fieldset>
+        </br>
 
         <input type="submit" name="action" value="Insertar">
         <input type="submit" name="action" value="Consultar">
         <input type="submit" name="action" value="Modificar">
         <input type="submit" name="action" value="Eliminar">
 
-    </br>
-    <footer>Esto es un footer del formulario</footer>
+        </br>
+        <footer></br>Esto es un footer del formulario</footer>
 </body>
+
 </html>

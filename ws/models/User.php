@@ -4,7 +4,7 @@
  *  clas User implements 
  */
 
- require_once"./interfaces/IToJson.php"; 
+require_once "./interfaces/IToJson.php";
 class User implements IToJson
 {
     //Properties
@@ -15,55 +15,68 @@ class User implements IToJson
     public $gender;
     public $email;
 
-    public function getName(){
+    public function getName()
+    {
         return $this->name;
     }
 
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
     }
 
-    public function getSurname(){
+    public function getSurname()
+    {
         return $this->surname;
     }
 
-    public function setSurname($surname) {
+    public function setSurname($surname)
+    {
         $this->surname = $surname;
     }
 
-    public function getPassword(){
+    public function getPassword()
+    {
         return $this->password;
     }
 
-    public function setPassword($password) {
+    public function setPassword($password)
+    {
         $this->password = $password;
     }
 
-    public function getPhone(){
+    public function getPhone()
+    {
         return $this->phone;
     }
 
-    public function setPhone($phone) {
+    public function setPhone($phone)
+    {
         $this->phone = $phone;
     }
 
-    public function getGender(){
+    public function getGender()
+    {
         return $this->gender;
     }
 
-    public function setGender($gender) {
+    public function setGender($gender)
+    {
         $this->gender = $gender;
     }
 
-    public function getEmail(){
+    public function getEmail()
+    {
         return $this->email;
     }
 
-    public function setEmail($email) {
+    public function setEmail($email)
+    {
         $this->email = $email;
     }
 
-    public function toJson(){
+    public function toJson()
+    {
         //User object converted to JSON adn returned
         $userData = [
             'name' => $this->name,
