@@ -28,6 +28,11 @@ if (isset($_SESSION['form_data'])) {
   if ($id) {
     $result = consultarAlumnoPorID($conexion, $id);
   } else {
+    // Verificar que name, surname y password no sean nulos ni estén vacíos
+    if (empty(trim($name)) || empty(trim($surname)) || empty(trim($password))) {
+      echo json_encode(['error' => 'Obligatorio informar los campos nombre, apellido y contrasenya']);
+      exit();
+    }
     $result = consultarAlumno($conexion, $name, $surname, $password);
   }
 
@@ -35,8 +40,6 @@ if (isset($_SESSION['form_data'])) {
 
   // Limpiar los datos de la sesión después de usarlos
   unset($_SESSION['form_data']);
-} else {
-  echo json_encode(["error" => "Por favor, proporciona el nombre, apellidos y password para la consulta."]);
 }
 
 /**

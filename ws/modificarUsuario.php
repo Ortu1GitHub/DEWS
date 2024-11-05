@@ -35,15 +35,16 @@ if (isset($_SESSION['form_data'])) {
   $user->setEmail($email);
   $user->setGender($gender);
 
-  // Llamar a la función de modificado
-  $result = modificarAlumnoPorID($conexion, $user, $id);
-
-  echo json_encode($result);
-
-  // Limpiar los datos de la sesión después de usarlos
-  unset($_SESSION['form_data']);
-} else {
-  echo json_encode(["error" => "Por favor, proporciona el nombre, apellidos y password para la consulta."]);
+  // Llamar a la función de modificacion
+  if ($id) {
+    $result = modificarAlumnoPorID($conexion,$user, $id);
+    echo json_encode($result);
+  } else {
+    echo json_encode(["error" => "Por favor, proporciona el ID para la modiificacion"]);
+    // Limpiar los datos de la sesión después de usarlos
+    unset($_SESSION['form_data']);
+    exit();
+  }
 }
 
 /**
@@ -79,7 +80,6 @@ function modificarAlumnoPorID($conexion, $user, $id)
 
     // Obtener todos los resultados como un array asociativo
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    var_dump($result);
 
     // Comprobar si se afectó alguna fila
     if ($stmt->rowCount() == 1) {

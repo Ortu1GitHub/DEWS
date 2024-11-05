@@ -21,14 +21,16 @@ if (isset($_SESSION['form_data'])) {
   }
 
   // Llamar a la función de borrado
-  $result = eliminarAlumnoPorID($conexion, $id);
-
-  echo json_encode($result);
+  if ($id) {
+    $result = eliminarAlumnoPorID($conexion, $id);
+    echo json_encode($result);
+  } else {
+    echo json_encode(["error" => "Por favor, proporciona el ID para el borrado"]);
+    exit();
+  }
 
   // Limpiar los datos de la sesión después de usarlos
   unset($_SESSION['form_data']);
-} else {
-  echo json_encode(["error" => "Por favor, proporciona el ID para el borrado"]);
 }
 
 /**

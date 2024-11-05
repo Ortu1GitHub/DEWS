@@ -16,6 +16,12 @@ if (isset($_SESSION['form_data'])) {
     $email = $formData['email'] ?? null;
     $gender = $formData['gender'] ?? null;
 
+    // Verificar que name, surname y password no sean nulos ni estén vacíos
+    if (empty(trim($name)) || empty(trim($surname)) || empty(trim($password))) {
+        echo json_encode(['error' => 'Obligatorio informar los campos nombre, apellido y contrasenya']);
+        exit();
+    }
+
     try {
         $conexion = new Conexion();
     } catch (Exception $e) {
@@ -31,6 +37,7 @@ if (isset($_SESSION['form_data'])) {
     $user->setPassword($password);
     $user->setEmail($email);
     $user->setGender($gender);
+
 
     // Insertar en la base de datos
     $result = insertarAlumno($conexion, $user);
