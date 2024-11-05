@@ -6,7 +6,7 @@
     $name = $_POST['name'] ?? null;
     $surname = $_POST['surname'] ?? null;
     $phone = $_POST['phone'] ?? null;
-    $password = $_POST['password'] ?? null;
+    $password = $_POST['pass'] ?? null;
     $gender = $_POST['gender'] ?? null;
 
 

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>DWEC PRACTICA 1 FORMULARIO</title>
+<title>DWES PRACTICA MYSQL FORMULARIO</title>
 <meta charset="UTF-8">
 </head>
 
 <body>
-    <h1>DWEC PRACTICA 1 FORMULARIO</h1>
+    <h1>DWES PRACTICA MYSQL FORMULARIO</h1>
 
         <!-- Enlaces del site-->
         <a id="inicio" href="home.html">Inicio</a>
@@ -18,30 +18,30 @@
     </br>
     </br>
 
-    <form  method="post" enctype=“multipart/form-data” action="./ws/crearUsuario.php">
+    <form  method="post" enctype="multipart/form-data" action="./ws/procesarFormulario.php">
         <fieldset>
             <legend><strong>DATOS PERSONALES</strong></legend>
             <table>
                 <tr>
                     <td>Nombre:</td>
-                    <td><input type="text" name="name" placeholder="Nombre" required></td>
+                    <td><input type="text" name="name" placeholder="Nombre"></td>
                 </tr>
                 <tr>
                     <td>Apellidos:</td>
-                    <td><input type="text" name="surname" placeholder="Apellidos" required></td>
+                    <td><input type="text" name="surname" placeholder="Apellidos"></td>
                 </tr>
                 <tr>
                     <td>Contraseña:</td>
-                    <td><input type="password" name="pass" placeholder="Contraseña" required></td>
+                    <td><input type="password" name="pass" placeholder="Contraseña"></td>
                 </tr>
                 <tr>
                     <td>Teléfono:</td>
                     <!--Tipo number en el telefono para que solo acepte numeros-->
-                    <td><input type="tel" name="phone" placeholder="0123456789" pattern="[0-9]{9}" required></td>
+                    <td><input type="tel" name="phone" placeholder="0123456789" pattern="[0-9]{9}"></td>
                 </tr>
                 <tr>
                     <td>Email:</td>
-                    <td><input type="email" name="email" placeholder="Email" required></td>
+                    <td><input type="text" name="email" placeholder="Email"></td>
                 </tr>
                 <tr>
                     <td>Género:</td>
@@ -52,11 +52,18 @@
                     <label><input type="radio"  name="gender" value="Femenino">Femenino</label></br>
                     </td>
                 </tr>
+                <tr>
+                    <td>ID:</td>
+                    <td><input type="text" name="id" placeholder="ID"></td>
+                </tr>
             </table>
         </fieldset>
-    </br>
-        <input type="submit" value="Enviar">
-    </form>
+
+        <input type="submit" name="action" value="Insertar">
+        <input type="submit" name="action" value="Consultar">
+        <input type="submit" name="action" value="Modificar">
+        <input type="submit" name="action" value="Eliminar">
+
     </br>
     <footer>Esto es un footer del formulario</footer>
 </body>

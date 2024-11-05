@@ -13,6 +13,7 @@ class User implements IToJson
     public $phone;
     public $password;
     public $gender;
+    public $email;
 
     public function getName(){
         return $this->name;
@@ -54,6 +55,14 @@ class User implements IToJson
         $this->gender = $gender;
     }
 
+    public function getEmail(){
+        return $this->email;
+    }
+
+    public function setEmail($email) {
+        $this->email = $email;
+    }
+
     public function toJson(){
         //User object converted to JSON adn returned
         $userData = [
@@ -61,6 +70,7 @@ class User implements IToJson
             'surname' => $this->surname,
             'phone' => $this->phone,
             'password' => $this->password,
+            'email' => $this->email,
             'gender' => $this->gender
         ];
         return json_encode($userData);
