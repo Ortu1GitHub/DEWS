@@ -63,7 +63,6 @@ if (isset($_SESSION['form_data'])) {
 function modificarAlumnoPorID($conexion, $user, $id)
 {
   try {
-
     // Almacenar valores en variables
     $nombre = $user->getName();
     $apellidos = $user->getSurname();
@@ -75,46 +74,56 @@ function modificarAlumnoPorID($conexion, $user, $id)
     //Comienzo del comando SQL
     $sql = "UPDATE alumno SET ";
     $updates = [];
-    $params = [];
 
     // Construir la consulta solo con los campos que tienen valores
     if ($nombre) {
       $updates[] = "nombre = :nombre";
-      $params[':nombre'] = $nombre;
     }
     if ($apellidos) {
       $updates[] = "apellidos = :apellidos";
-      $params[':apellidos'] = $apellidos;
     }
     if ($telefono) {
       $updates[] = "telefono = :telefono";
-      $params[':telefono'] = $telefono;
     }
     if ($password) {
       $updates[] = "password = :password";
-      $params[':password'] = $password;
     }
     if ($email) {
       $updates[] = "email = :email";
-      $params[':email'] = $email;
     }
     if ($gender) {
       $updates[] = "sexo = :gender";
-      $params[':gender'] = $gender;
     }
 
     //Concatenar las actualizaciones con , y el WHERE con el id
     $sql .= implode(", ", $updates) . " WHERE id = :id";
     $params[':id'] = $id;
 
-    //Preparar la consulta
+    // Preparar la consulta
     $stmt = $conexion->prepare($sql);
 
-    //Asociar los parámetros dinámicamente
-    foreach ($params as $param => $value) {
-      $stmt->bindValue($param, $value);
+    // Asociar los valores de los parámetros solo si existen
+    if ($nombre) {
+      $stmt->bindParam(':nombre', $nombre, PDO::PARAM_STR);
+    }
+    if ($apellidos) {
+      $stmt->bindParam(':apellidos', $apellidos, PDO::PARAM_STR);
+    }
+    if ($telefono) {
+      $stmt->bindParam(':telefono', $telefono, PDO::PARAM_STR);
+    }
+    if ($password) {
+      $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+    }
+    if ($email) {
+      $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+    }
+    if ($gender) {
+      $stmt->bindParam(':gender', $gender, PDO::PARAM_STR);
     }
 
+    // Asociar el parámetro de ID
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
 
     // Comprobar si se afectó alguna fila
