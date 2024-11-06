@@ -37,7 +37,16 @@ if (isset($_SESSION['form_data'])) {
 
   // Llamar a la función de modificacion
   if ($id) {
-    $result = modificarAlumnoPorID($conexion,$user, $id);
+    //Se comprueba que se haya informado algun campo 
+    // Verificar que name, surname y password no sean nulos ni estén vacíos
+    if (
+      empty(trim($name)) && empty(trim($surname)) && empty(trim($password)) && empty(trim($email))
+      && empty(trim($phone)) && empty(trim($gender))
+    ) {
+      echo json_encode(['error' => 'Obligatorio informar algun(os) campo(s) a editar']);
+      exit();
+    }
+    $result = modificarAlumnoPorID($conexion, $user, $id);
     echo json_encode($result);
   } else {
     echo json_encode(["error" => "Por favor, proporciona el ID para la modiificacion"]);
@@ -54,9 +63,6 @@ if (isset($_SESSION['form_data'])) {
 function modificarAlumnoPorID($conexion, $user, $id)
 {
   try {
-    // Preparar la consulta
-    $sql = "UPDATE alumno set nombre=:nombre, apellidos=:apellidos,password=:password,telefono=:telefono,email=:email,sexo=:gender where id=:id";
-    $stmt = $conexion->prepare($sql);
 
     // Almacenar valores en variables
     $nombre = $user->getName();
@@ -66,20 +72,50 @@ function modificarAlumnoPorID($conexion, $user, $id)
     $email = $user->getEmail();
     $gender = $user->getGender();
 
-    // Asociar los parámetros
-    $stmt->bindParam(':nombre', $nombre, PDO::PARAM_STR);
-    $stmt->bindParam(':apellidos', $apellidos, PDO::PARAM_STR);
-    $stmt->bindParam(':telefono', $telefono, PDO::PARAM_STR);
-    $stmt->bindParam(':password', $password, PDO::PARAM_STR);
-    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-    $stmt->bindParam(':gender', $gender, PDO::PARAM_STR);
-    $stmt->bindParam(':id', $id, PDO::PARAM_STR);
+    //Comienzo del comando SQL
+    $sql = "UPDATE alumno SET ";
+    $updates = [];
+    $params = [];
 
-    // Ejecutar la consulta
+    // Construir la consulta solo con los campos que tienen valores
+    if ($nombre) {
+      $updates[] = "nombre = :nombre";
+      $params[':nombre'] = $nombre;
+    }
+    if ($apellidos) {
+      $updates[] = "apellidos = :apellidos";
+      $params[':apellidos'] = $apellidos;
+    }
+    if ($telefono) {
+      $updates[] = "telefono = :telefono";
+      $params[':telefono'] = $telefono;
+    }
+    if ($password) {
+      $updates[] = "password = :password";
+      $params[':password'] = $password;
+    }
+    if ($email) {
+      $updates[] = "email = :email";
+      $params[':email'] = $email;
+    }
+    if ($gender) {
+      $updates[] = "sexo = :gender";
+      $params[':gender'] = $gender;
+    }
+
+    //Concatenar las actualizaciones con , y el WHERE con el id
+    $sql .= implode(", ", $updates) . " WHERE id = :id";
+    $params[':id'] = $id;
+
+    //Preparar la consulta
+    $stmt = $conexion->prepare($sql);
+
+    //Asociar los parámetros dinámicamente
+    foreach ($params as $param => $value) {
+      $stmt->bindValue($param, $value);
+    }
+
     $stmt->execute();
-
-    // Obtener todos los resultados como un array asociativo
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Comprobar si se afectó alguna fila
     if ($stmt->rowCount() == 1) {

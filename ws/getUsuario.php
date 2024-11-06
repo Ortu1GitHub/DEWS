@@ -10,9 +10,6 @@ header('Content-Type: application/json');
 // Verificar que los parámetros POST están definidos
 if (isset($_SESSION['form_data'])) {
   $formData = $_SESSION['form_data'];
-  $name = $formData['name'] ?? null;
-  $surname = $formData['surname'] ?? null;
-  $password = $formData['pass'] ?? null;
   $id = $formData['id'] ?? null;
 
 
@@ -24,16 +21,11 @@ if (isset($_SESSION['form_data'])) {
     exit();
   }
 
-  //Al consultar o bien nos pasan el ID o bien los valores de nombre , apellidos y contrasenya del formulario
+  //Al consultar o bien nos pasan el ID o listamos todos los alumnos
   if ($id) {
     $result = consultarAlumnoPorID($conexion, $id);
   } else {
-    // Verificar que name, surname y password no sean nulos ni estén vacíos
-    if (empty(trim($name)) || empty(trim($surname)) || empty(trim($password))) {
-      echo json_encode(['error' => 'Obligatorio informar los campos nombre, apellido y contrasenya']);
-      exit();
-    }
-    $result = consultarAlumno($conexion, $name, $surname, $password);
+    $result = consultarAlumno($conexion);
   }
 
   echo json_encode($result);
@@ -43,19 +35,14 @@ if (isset($_SESSION['form_data'])) {
 }
 
 /**
- * Funciones para consultar el alumno en la base de datos usando consultas preparadas bien por ID o bien por los campos nombre, apellidos y contrasenya
+ * Funciones para consultar el alumno en la base de datos usando consultas preparadas bien por ID o listar todos los alumnos
  */
-function consultarAlumno($conexion, $name, $surname, $pass)
+function consultarAlumno($conexion)
 {
   try {
     // Preparar la consulta
-    $sql = "SELECT * FROM alumno WHERE nombre = :nombre AND apellidos = :apellidos AND password = :password";
+    $sql = "SELECT * FROM alumno";
     $stmt = $conexion->prepare($sql);
-
-    // Asociar los parámetros
-    $stmt->bindParam(':nombre', $name, PDO::PARAM_STR);
-    $stmt->bindParam(':apellidos', $surname, PDO::PARAM_STR);
-    $stmt->bindParam(':password', $pass, PDO::PARAM_STR);
 
     // Ejecutar la consulta
     $stmt->execute();
