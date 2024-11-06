@@ -99,10 +99,10 @@ function modificarAlumnoPorID($conexion, $user, $id)
     $sql .= implode(", ", $updates) . " WHERE id = :id";
     $params[':id'] = $id;
 
-    // Preparar la consulta
+    //Preparar la consulta
     $stmt = $conexion->prepare($sql);
 
-    // Asociar los valores de los parámetros solo si existen
+    //Asociar los valores de los parámetros solo si existen
     if ($nombre) {
       $stmt->bindParam(':nombre', $nombre, PDO::PARAM_STR);
     }
@@ -122,7 +122,7 @@ function modificarAlumnoPorID($conexion, $user, $id)
       $stmt->bindParam(':gender', $gender, PDO::PARAM_STR);
     }
 
-    // Asociar el parámetro de ID
+    //Asociar el parámetro de ID que tiene que venir obligatoriamente
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
 
