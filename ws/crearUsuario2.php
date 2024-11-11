@@ -29,7 +29,6 @@ if (isset($_SESSION['form_data'])) {
         exit();
     }
 
-    // Crear objeto User con los datos
     $user = new User();
     $user->setName($name);
     $user->setSurname($surname);
@@ -56,7 +55,6 @@ function insertarAlumno($conexion, $user)
         $sql = "INSERT INTO alumno (nombre, apellidos, telefono, password,email,sexo) VALUES (:nombre, :apellidos, :telefono, :password,:email,:gender)";
         $stmt = $conexion->prepare($sql);
 
-        // Almacenar valores en variables
         $nombre = $user->getName();
         $apellidos = $user->getSurname();
         $telefono = $user->getPhone();
@@ -72,7 +70,7 @@ function insertarAlumno($conexion, $user)
         $stmt->bindParam(':email', $email, PDO::PARAM_STR);
         $stmt->bindParam(':gender', $gender, PDO::PARAM_STR);
 
-        // Ejecutar la consulta
+
         $stmt->execute();
 
         return [

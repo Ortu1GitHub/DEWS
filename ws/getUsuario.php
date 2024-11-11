@@ -14,7 +14,6 @@ if (isset($_SESSION['form_data'])) {
 
 
   try {
-    // Crear la instancia de conexión
     $conexion = new Conexion();
   } catch (Exception $e) {
     echo json_encode(['error' => "Error: " . $e->getMessage()]);
@@ -44,14 +43,12 @@ function consultarAlumno($conexion)
     $sql = "SELECT * FROM alumno";
     $stmt = $conexion->prepare($sql);
 
-    // Ejecutar la consulta
     $stmt->execute();
 
     // Obtener todos los resultados como un array asociativo
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     if (count($result) > 0) {
-      // Devolver array de resultados
       // Extraer solo los campos 'ID','nombre' y 'apellidos' de cada registro
       $filteredResult = array_map(function ($row) {
         return [
@@ -79,21 +76,18 @@ function consultarAlumno($conexion)
 function consultarAlumnoPorID($conexion, $id)
 {
   try {
-    // Preparar la consulta
+
     $sql = "SELECT * FROM alumno WHERE id = :id";
     $stmt = $conexion->prepare($sql);
 
     // Asociar los parámetros
     $stmt->bindParam(':id', $id, PDO::PARAM_STR);
 
-    // Ejecutar la consulta
     $stmt->execute();
 
-    // Obtener todos los resultados como un array asociativo
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     if (count($result) > 0) {
-      // Extraer solo los campos 'nombre' y 'apellidos' de cada registro
       $filteredResult = array_map(function ($row) {
         return [
           //Se muestra el id para distinguir resultados multiples

@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // Guarda los datos del formulario en $_SESSION
   $_SESSION['form_data'] = $_POST;
 
+  //Se llama al php correspondiente
   if ($action === 'Insertar') {
     header('Location: ./crearUsuario2.php');
     exit();

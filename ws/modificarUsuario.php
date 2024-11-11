@@ -19,14 +19,12 @@ if (isset($_SESSION['form_data'])) {
   $id = $formData['id'] ?? null;
 
   try {
-    // Crear la instancia de conexión
     $conexion = new Conexion();
   } catch (Exception $e) {
     echo json_encode(['error' => "Error: " . $e->getMessage()]);
     exit();
   }
 
-  // Crear objeto User con los datos
   $user = new User();
   $user->setName($name);
   $user->setSurname($surname);
@@ -99,7 +97,6 @@ function modificarAlumnoPorID($conexion, $user, $id)
     $sql .= implode(", ", $updates) . " WHERE id = :id";
     $params[':id'] = $id;
 
-    //Preparar la consulta
     $stmt = $conexion->prepare($sql);
 
     //Asociar los valores de los parámetros solo si existen

@@ -13,7 +13,6 @@ if (isset($_SESSION['form_data'])) {
   $id = $formData['id'] ?? null;
 
   try {
-    // Crear la instancia de conexión
     $conexion = new Conexion();
   } catch (Exception $e) {
     echo json_encode(['error' => "Error: " . $e->getMessage()]);
@@ -26,11 +25,10 @@ if (isset($_SESSION['form_data'])) {
     echo json_encode($result);
   } else {
     echo json_encode(["error" => "Por favor, proporciona el ID para el borrado"]);
+    // Limpiar los datos de la sesión después de usarlos
+    unset($_SESSION['form_data']);
     exit();
   }
-
-  // Limpiar los datos de la sesión después de usarlos
-  unset($_SESSION['form_data']);
 }
 
 /**
@@ -40,19 +38,15 @@ if (isset($_SESSION['form_data'])) {
 function eliminarAlumnoPorID($conexion, $id)
 {
   try {
-    // Preparar la consulta
     $sql = "delete FROM alumno WHERE id = :id";
     $stmt = $conexion->prepare($sql);
 
-    // Asociar los parámetros
     $stmt->bindParam(':id', $id, PDO::PARAM_STR);
 
-    // Ejecutar la consulta
     $stmt->execute();
 
     // Obtener todos los resultados como un array asociativo
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    var_dump($result);
 
     // Comprobar si se afectó alguna fila
     if ($stmt->rowCount() == 1) {
