@@ -18,7 +18,16 @@ class StudentsController extends Controller
     }
 
     public  function getById (Request $request,$id){
-        $student=DB::table('students')->where('id',$id)->get();
+        $student=DB::table('students')->where('id',$id)->get()->first();
+
+          // Verificar si el estudiante existe
+        if (!$student) {
+            return response()->json([
+            'success' => false,
+            'message' => "No existe el alumno con ID: $id"
+            ], 404);
+        }
+
         return response()->json([
         'sucess'=> true,
         'message' => "Obtengo un alumno concreto desde el controller con id: " . $id,
@@ -27,7 +36,18 @@ class StudentsController extends Controller
 }
 
     public  function delete (Request $request,$id){
+        $student=DB::table('students')->where('id',$id)->first();
+
+        // Verificar si el estudiante existe
+        if (!$student) {
+            return response()->json([
+                    'success' => false,
+                    'message' => "No existe el alumno con ID: $id"
+                    ], 404);
+        }
+
         DB::table('students')->where('id',$id)->delete();
+
         return response()->json([
             'sucess'=> true,
             'message' => "Borro el alumno desde el controller con id: " . $id,
@@ -89,8 +109,17 @@ class StudentsController extends Controller
              $pass = $request->input('pass');
              $email = $request->input('email');
              $gender = $request->input('gender');
+
+            // Verificar si el estudiante existe
+            $student=DB::table('students')->where('id',$id)->first();
+            if (!$student) {
+            return response()->json([
+                    'success' => false,
+                    'message' => "No existe el alumno con ID: $id"
+                    ], 404);
+            }
              
-        $studentModified=DB::table('students')->where('id',$id)->update([
+            $studentModified=DB::table('students')->where('id',$id)->update([
             'name' => $name,
             'phone' => $phone,
             'age' => $age,
@@ -99,7 +128,8 @@ class StudentsController extends Controller
             'gender' => $gender,
             'created_at' => now(),
             'updated_at' => now(),
-    ]);
+             ]);
+
         return response()->json([
         'sucess'=> true,
         'message' => "Modifico un alumno concreto desde el controller con id: " . $id,
