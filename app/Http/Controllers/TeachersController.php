@@ -62,10 +62,7 @@ public  function create (Request $request){
 }
 
 public  function modifyById (Request $request,$id){
-   // Obtener los datos directamente del request
-   //$name = $request->input('name');
-   //$location = $request->input('location');
-   
+
    // Buscar el profesor por ID
    $teacher = Teachers::find($id);
 
@@ -76,6 +73,11 @@ public  function modifyById (Request $request,$id){
            'message' => "No existe el profesor con ID: $id"
        ], 404);
    }
+
+       // Obtener los datos directamente del request
+       $teacher->name = $request->input('name', $teacher->name);
+       $teacher->age = $request->input('age', $teacher->age);
+       $teacher->salary = $request->input('salary', $teacher->salary);
 
    // Guardar los cambios
    $teacher->save();

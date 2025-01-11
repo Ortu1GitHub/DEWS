@@ -61,11 +61,7 @@ public  function create (Request $request){
     ]);
 }
 
-public  function modifyById (Request $request,$id){
-   // Obtener los datos directamente del request
-   //$name = $request->input('name');
-   //$location = $request->input('location');
-   
+public  function modifyById (Request $request,$id){   
    // Buscar la asignatura por su ID
    $subject = Subjects::find($id);
 
@@ -76,6 +72,11 @@ public  function modifyById (Request $request,$id){
            'message' => "No existe la asignatura con ID: $id"
        ], 404);
    }
+
+    // Obtener los datos directamente del request
+    $subject->name = $request->input('name', $subject->name);
+    $subject->course = $request->input('course', $subject->course);
+    $subject->grade = $request->input('grade', $subject->grade);
 
    // Guardar los cambios
    $subject->save();

@@ -58,11 +58,7 @@ public  function create (Request $request){
     ]);
 }
 
-public  function modifyById (Request $request,$id){
-   // Obtener los datos directamente del request
-   //$name = $request->input('name');
-   //$location = $request->input('location');
-   
+public  function modifyById (Request $request,$id){   
    // Buscar la escuela por ID
    $school = Schools::find($id);
 
@@ -74,6 +70,9 @@ public  function modifyById (Request $request,$id){
        ], 404);
    }
 
+    // Obtener los datos directamente del request
+    $school->name = $request->input('name', $school->name); 
+    $school->location = $request->input('location', $school->location);
    // Guardar los cambios
    $school->save();
 
