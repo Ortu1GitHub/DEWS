@@ -24,6 +24,14 @@ public  function getById (Request $request,$id){
    // Usar Eloquent para buscar un profesor por su ID
    $teacher = Teachers::find($id);
 
+    // Verificar si el profesor existe
+    if (!$teacher) {
+        return response()->json([
+            'success' => false,
+            'message' => "No existe el profesor con ID: $id"
+        ], 404);
+    }
+
    return response()->json([
        'success' => true,
        'message' => "Obtengo un profesor concreto desde el controller con id: $id",
@@ -33,6 +41,15 @@ public  function getById (Request $request,$id){
 
 public  function delete (Request $request,$id){
     // Usar Eloquent para borrar un profesor por su ID
+    $teacher=Teachers::find($id);
+
+    // Verificar si el profesor existe
+   if (!$teacher) {
+    return response()->json([
+        'success' => false,
+        'message' => "No existe el profesor con ID: $id"
+    ], 404);
+}
     Teachers::find($id)->delete();
     
     return response()->json([

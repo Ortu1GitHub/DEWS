@@ -23,6 +23,14 @@ public  function getById (Request $request,$id){
    // Usar Eloquent para buscar una escuela por su ID
    $school = Schools::find($id);
 
+      // Verificar si la escuela existe
+      if (!$school) {
+        return response()->json([
+            'success' => false,
+            'message' => "No existe la escuela con ID: $id"
+        ], 404);
+    }
+
    return response()->json([
        'success' => true,
        'message' => "Obtengo una escuela concreta desde el controller con id: $id",

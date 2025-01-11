@@ -24,6 +24,14 @@ public  function getById (Request $request,$id){
    // Usar Eloquent para buscar una asignatura por su ID
    $subject = Subjects::find($id);
 
+         // Verificar si la asignatura existe
+         if (!$subject) {
+            return response()->json([
+                'success' => false,
+                'message' => "No existe la asignatura con ID: $id"
+            ], 404);
+        }
+
    return response()->json([
        'success' => true,
        'message' => "Obtengo una asignatura concreta desde el controller con id: $id",
@@ -33,6 +41,16 @@ public  function getById (Request $request,$id){
 
 public  function delete (Request $request,$id){
     // Usar Eloquent para borrar una asignatura por su ID
+    $subject=Subjects::find($id);
+
+    // Verificar si la asignatura existe
+   if (!$subject) {
+    return response()->json([
+        'success' => false,
+        'message' => "No existe la asignatura con ID: $id"
+    ], 404);
+    }
+
     Subjects::find($id)->delete();
     
     return response()->json([
