@@ -13,7 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         //
-                // Registrar middlewares globales o personalizados aquí
+                // Registrar middlewares aquí
                 \App\Http\Middleware\ValidateStudentId::class;
     })
     ->withExceptions(function (Exceptions $exceptions) {
