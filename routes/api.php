@@ -8,49 +8,44 @@ use App\Http\Controllers\SchoolsController;
 use App\Http\Controllers\TeachersController;
 use App\Http\Controllers\SubjectsController;
 
-
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-
-Route::prefix('/students')->controller(StudentsController::class)->group(function(){
-
-Route::middleware(ValidateStudentId::class)->group(function () {
-    Route::get('{id}', 'getById');
-    Route::delete('{id}', 'delete');
-    Route::put('{id}', 'modifyById');
+// Rutas Students
+Route::prefix('students')->controller(StudentsController::class)->group(function() {
+    Route::middleware(ValidateStudentId::class)->group(function () {
+        Route::get('{id}', 'getById');
+        Route::delete('{id}', 'delete');
+        Route::put('{id}', 'modifyById');
+    });
+    Route::get('', 'getAll');
+    Route::post('', 'create');
 });
 
-Route::get('','getAll');
-Route::post('','create');
-
-
-//Rutas Schools
-//Route::prefix('/schools')->controller(SchoolsController::class)->group(function(){
-    Route::get('/schools','getAll');
+// Rutas Schools (no dentro de students, sino al mismo nivel)
+Route::prefix('schools')->controller(SchoolsController::class)->group(function() {
+    Route::get('', 'getAll');
     Route::get('{id}', 'getById');
     Route::delete('{id}', 'delete');
     Route::put('{id}', 'modifyById');
-    Route::post('','create');
-//});
-
-//Rutas Teachers
-Route::prefix('/teachers')->controller(TeachersController::class)->group(function(){
-    Route::get('','getAll');
-    Route::get('{id}', 'getById');
-    Route::delete('{id}', 'delete');
-    Route::put('{id}', 'modifyById');
-    Route::post('','create');
+    Route::post('', 'create');
 });
 
-//Rutas Subjects
-Route::prefix('/subjects')->controller(SubjectsController::class)->group(function(){
-    Route::get('','getAll');
+// Rutas Teachers
+Route::prefix('teachers')->controller(TeachersController::class)->group(function() {
+    Route::get('', 'getAll');
     Route::get('{id}', 'getById');
     Route::delete('{id}', 'delete');
     Route::put('{id}', 'modifyById');
-    Route::post('','create');
+    Route::post('', 'create');
 });
 
+// Rutas Subjects
+Route::prefix('subjects')->controller(SubjectsController::class)->group(function() {
+    Route::get('', 'getAll');
+    Route::get('{id}', 'getById');
+    Route::delete('{id}', 'delete');
+    Route::put('{id}', 'modifyById');
+    Route::post('', 'create');
 });
