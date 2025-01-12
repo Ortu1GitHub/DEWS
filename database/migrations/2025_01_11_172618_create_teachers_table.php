@@ -16,10 +16,10 @@ return new class extends Migration
             $table->string('name'); 
             $table->integer('age'); 
             $table->integer('salary'); 
-            // Foreign key referencing `schools`
-            $table->foreignId('schools_id') // Clave foránea hacia `schools`
-                  ->constrained('schools') // Relación con `schools`
-                  ->onDelete('cascade'); // Elimina el profesor si se elimina la escuela
+            // Foreign key referencing "schools"
+            $table->foreignId('schools_id')
+                  ->constrained('schools')
+                  ->onDelete('cascade');
             $table->timestamps();
         });
     }
