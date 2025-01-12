@@ -108,8 +108,8 @@ public  function modifyById (Request $request,$id){
 
 public function getTeacherBySubject($id)
 {
-    $subject = Subjects::with('subject')->findOrFail($id);
-    return response()->json($subject);
+    $teacher = Subjects::with('teacher')->findOrFail($id);
+    return response()->json($teacher);
 }
 
 

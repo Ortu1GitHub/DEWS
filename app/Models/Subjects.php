@@ -19,7 +19,7 @@ class Subjects extends Model
         protected $fillable = ['name', 'course','grade','teachers_id'];
 
         // Relación inversa 1:1 con Teachers
-        public function subject()
+        public function teacher()
         {
         return $this->belongsTo(Teachers::class,'teachers_id');
         }
