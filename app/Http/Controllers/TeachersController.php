@@ -114,7 +114,7 @@ public  function modifyById (Request $request,$id){
 
     public function getTeacherAndSubjects($id)
     {
-        $teacher = Teachers::with('teacher')->findOrFail($id);
+        $teacher = Teachers::with('subject')->findOrFail($id);
         return response()->json($teacher);
     }
 }
