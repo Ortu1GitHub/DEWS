@@ -23,13 +23,15 @@ Route::prefix('students')->controller(StudentsController::class)->group(function
     Route::post('', 'create');
 });
 
-// Rutas Schools (no dentro de students, sino al mismo nivel)
+// Rutas Schools
 Route::prefix('schools')->controller(SchoolsController::class)->group(function() {
     Route::get('', 'getAll');
     Route::get('{id}', 'getById');
     Route::delete('{id}', 'delete');
     Route::put('{id}', 'modifyById');
     Route::post('', 'create');
+    // Escuela con profesor
+    Route::get('/{id}/teachers','getSchoolAndTeacher');
 });
 
 // Rutas Teachers
@@ -39,6 +41,10 @@ Route::prefix('teachers')->controller(TeachersController::class)->group(function
     Route::delete('{id}', 'delete');
     Route::put('{id}', 'modifyById');
     Route::post('', 'create');
+    // Escuela desde profesor (inverso)
+    Route::get('/{id}/schools', 'getSchoolByTeacher');
+    // Profesor con asignaturas
+    Route::get('/{id}/subjects','getTeacherAndsubjects');
 });
 
 // Rutas Subjects
@@ -48,4 +54,6 @@ Route::prefix('subjects')->controller(SubjectsController::class)->group(function
     Route::delete('{id}', 'delete');
     Route::put('{id}', 'modifyById');
     Route::post('', 'create');
+    // Profesor desde asignatura (inverso)
+    Route::get('/{id}/teachers', 'getTeacherBySubject');
 });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Schools;
+use App\Models\Teachers;
 
 class SchoolsController extends Controller
 {
@@ -90,5 +91,11 @@ public  function modifyById (Request $request,$id){
        'data' => $school
    ]);
 }
+
+    public function getSchoolAndTeacher($id)
+    {
+            $school = Schools::with('teacher')->findOrFail($id);
+            return response()->json($school);
+    }
 
 }

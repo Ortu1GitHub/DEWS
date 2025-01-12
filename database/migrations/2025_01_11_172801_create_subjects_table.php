@@ -16,6 +16,10 @@ return new class extends Migration
             $table->string('name'); 
             $table->integer('course'); 
             $table->float('grade'); 
+            // Relación 1:N con "teachers"
+            $table->foreignId('teachers_id')
+                    ->constrained('teachers')
+                    ->onDelete('cascade'); // Elimina el profesor si se elimina la escuela
             $table->timestamps();
         });
     }

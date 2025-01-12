@@ -17,4 +17,11 @@ class Schools extends Model
     
         // Definir los atributos que son asignables
         protected $fillable = ['name', 'location'];
+
+        //Metodo directo
+        public function teacher()
+        {
+        return $this->hasOne(Teachers::class,'schools_id');
+        }
+
 }

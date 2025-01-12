@@ -17,5 +17,17 @@ class Teachers extends Model
         public $timestamps = true;
     
         // Definir los atributos que son asignables
-        protected $fillable = ['name', 'age','salary'];
+        protected $fillable = ['name', 'age','salary','school_id'];
+
+        // Relación inversa 1:1 con Schools
+        public function school()
+        {
+        return $this->belongsTo(Schools::class,'schools_id');
+        }
+
+        // Relación directa 1:N con Subjects
+        public function subject()
+        {
+        return $this->hasMany(Subjects::class,'teachers_id');
+        }
 }

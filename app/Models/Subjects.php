@@ -16,6 +16,11 @@ class Subjects extends Model
         public $timestamps = true;
     
         // Definir los atributos que son asignables
-        protected $fillable = ['name', 'course','grade'];
+        protected $fillable = ['name', 'course','grade','teachers_id'];
 
+        // Relación inversa 1:1 con Teachers
+        public function subject()
+        {
+        return $this->belongsTo(Teachers::class,'teachers_id');
+        }
 }

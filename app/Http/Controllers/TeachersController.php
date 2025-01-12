@@ -20,17 +20,17 @@ class TeachersController extends Controller
         ]);
     }
 
-public  function getById (Request $request,$id){
-   // Usar Eloquent para buscar un profesor por su ID
-   $teacher = Teachers::find($id);
+    public  function getById (Request $request,$id){
+    // Usar Eloquent para buscar un profesor por su ID
+    $teacher = Teachers::find($id);
 
-    // Verificar si el profesor existe
-    if (!$teacher) {
-        return response()->json([
-            'success' => false,
-            'message' => "No existe el profesor con ID: $id"
-        ], 404);
-    }
+        // Verificar si el profesor existe
+        if (!$teacher) {
+            return response()->json([
+                'success' => false,
+                'message' => "No existe el profesor con ID: $id"
+            ], 404);
+        }
 
    return response()->json([
        'success' => true,
@@ -105,4 +105,16 @@ public  function modifyById (Request $request,$id){
        'data' => $teacher
    ]);
 }
+
+    public function getSchoolByTeacher($id)
+    {
+        $teacher = Teachers::with('school')->findOrFail($id);
+        return response()->json($teacher);
+    }
+
+    public function getTeacherAndSubjects($id)
+    {
+        $teacher = Teachers::with('teacher')->findOrFail($id);
+        return response()->json($teacher);
+    }
 }
