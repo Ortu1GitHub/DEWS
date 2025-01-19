@@ -1,5 +1,6 @@
 <?php
 
+
 use App\Http\Controllers\StudentsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -7,6 +8,9 @@ use \App\Http\Middleware\ValidateStudentId;
 use App\Http\Controllers\SchoolsController;
 use App\Http\Controllers\TeachersController;
 use App\Http\Controllers\SubjectsController;
+use App\Http\Controllers\LoginController;
+use \App\Http\Middleware\IsUserAuthenticated;
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -57,3 +61,8 @@ Route::prefix('subjects')->controller(SubjectsController::class)->group(function
     // Profesor desde asignatura (inverso)
     Route::get('/{id}/teachers', 'getTeacherBySubject');
 });
+
+//Rutas login
+Route::post('login', [LoginController::class, 'login']);
+Route::middleware('auth:sanctum')->post('AmIAuthenticated', [LoginController::class, 'AmIAuthenticated']);
+Route::middleware(IsUserAuthenticated::class)->get('loginCustom', [LoginController::class, 'displayDataUserLogged']);

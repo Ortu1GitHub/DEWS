@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Schools;
-use App\Models\Teachers;
+use Illuminate\Support\Facades\Auth;
 
 class SchoolsController extends Controller
 {
     //
-    public function getAll(Request $request){
+      //
+      public function getAll(Request $request){
         // Usar Eloquent para obtener todas las escuelas
         $schools = Schools::all();
     
@@ -37,16 +38,7 @@ public  function getById (Request $request,$id){
        'message' => "Obtengo una escuela concreta desde el controller con id: $id",
        'data' => $school,
    ]);
-}
 
-public  function delete (Request $request,$id){
-    // Usar Eloquent para borrar una escuela por su ID
-    Schools::find($id)->delete();
-    
-    return response()->json([
-        'sucess'=> true,
-        'message' => "Borro la escuela desde el controller con id: " . $id,
-    ]);
 }
 
 public  function create (Request $request){

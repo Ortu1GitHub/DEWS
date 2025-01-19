@@ -16,7 +16,7 @@ class Schools extends Model
         public $timestamps = true;
     
         // Definir los atributos que son asignables
-        protected $fillable = ['name', 'location'];
+        protected $fillable = ['name', 'location','user','password'];
 
         //Metodo directo
         public function teacher()

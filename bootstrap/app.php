@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         //
                 // Registrar middlewares aquí
                 \App\Http\Middleware\ValidateStudentId::class;
+                \App\Http\Middleware\IsUserAuthenticated::class;
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
