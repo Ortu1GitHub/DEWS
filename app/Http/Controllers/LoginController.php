@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
@@ -49,7 +50,7 @@ class LoginController extends Controller
                 'user' => $user,
             ]);
         }
-
+    
         // Si las credenciales son incorrectas
         return response()->json([
             'success' => false,
@@ -57,23 +58,43 @@ class LoginController extends Controller
         ], 401);
     }
 
+
+    
     public function AmIAuthenticated(Request $request)
     {
-        $user = Auth::user();
+        // Depuración inicial para verificar los datos enviados en la solicitud
+        $requestData = $request->all();
+        //var_dump('Datos recibidos en la solicitud:', $requestData);
+        Log::info('Datos recibidos en la solicitud:', $requestData);
+    
+        // Verifica si el usuario está autenticado
         if (Auth::check()) {
+            // Obtén el usuario autenticado
+            $user = Auth::user();
+    
+            // Verifica si el campo 'name' está presente en la solicitud y lo compara con el usuario autenticado
+            $nameMatches = $request->has('name') && trim(strtolower($request->name)) === trim(strtolower($user->name));
+    
             return response()->json([
                 'authenticated' => true,
                 'message' => 'Usuario autenticado previamente.',
+                'name_matches' => $nameMatches,
                 'user' => $user,
             ]);
         }
-
+    
+        // Respuesta en caso de que el usuario no esté autenticado
         return response()->json([
             'authenticated' => false,
             'message' => 'Usuario no autenticado.',
-            'user' => $user,
+            'user' => null,
         ]);
     }
+    
+
+    
+    
+    
 
     public function displayDataUserLogged(Request $request)
     {
@@ -84,6 +105,7 @@ class LoginController extends Controller
                 'success' => true,
                 'user' => $user // Devolvemos los datos del usuario autenticado
             ]);
-        }
+        
+    }
 
 }

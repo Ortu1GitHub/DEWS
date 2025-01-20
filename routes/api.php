@@ -64,5 +64,5 @@ Route::prefix('subjects')->controller(SubjectsController::class)->group(function
 
 //Rutas login
 Route::post('login', [LoginController::class, 'login']);
-Route::middleware('auth:sanctum')->post('AmIAuthenticated', [LoginController::class, 'AmIAuthenticated']);
+Route::post('alreadyLogged', [LoginController::class, 'AmIAuthenticated'])->middleware('auth:sanctum');;
 Route::middleware(IsUserAuthenticated::class)->get('loginCustom', [LoginController::class, 'displayDataUserLogged']);
