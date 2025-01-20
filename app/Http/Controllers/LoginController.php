@@ -33,7 +33,7 @@ class LoginController extends Controller
         if (Auth::attempt($data)) {
             $user = Auth::user();
 
-            // Verificar si el usuario fue autenticado correctamente
+            // Verificar si el usuario se encuentra en BBDD
             if (!$user) {
                 return response()->json([
                     'success' => false,
@@ -41,7 +41,7 @@ class LoginController extends Controller
                 ], 500);
             }
 
-            // Intentar generar un token de Sanctum
+            // Intentar generar un token
             try {
                 $token = $user->createToken('API Token')->plainTextToken;
             } catch (\Exception $e) {
@@ -61,7 +61,7 @@ class LoginController extends Controller
             ]);
         }
     
-        //Credenciales incorrectas
+        //Si llego hasta aqui las credenciales son incorrectas incorrectas
         return response()->json([
             'success' => false,
             'message' => 'Autenticación fallida. Verifica tus credenciales.',
