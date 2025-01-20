@@ -10,24 +10,34 @@ class LoginController extends Controller
 {
     public function login(Request $request)
     {
+
+        //Comprobar si el usuario esta logado ya
+        if (Auth::guard('sanctum')->check()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Usuario ya autenticado',
+            ]);
+        }
+
         // Validar los datos del formulario
         $data = $request->validate([
             'name' => 'required|string',
             'password' => 'required|string',
         ]);
 
+    
         // Obtener las credenciales del usuario
-        $credentials = $request->only('name', 'password');
+        //$credentials = $request->only('name', 'password');
 
         // Intentar autenticar al usuario
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($data)) {
             $user = Auth::user();
 
             // Verificar si el usuario fue autenticado correctamente
             if (!$user) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Usuario no encontrado tras la autenticación.',
+                    'message' => 'Usuario no encontrado en la autenticación',
                 ], 500);
             }
 
@@ -51,24 +61,10 @@ class LoginController extends Controller
             ]);
         }
     
-        // Si las credenciales son incorrectas
+        //Credenciales incorrectas
         return response()->json([
             'success' => false,
             'message' => 'Autenticación fallida. Verifica tus credenciales.',
-        ], 401);
-    }
-
-    public function testLogin(Request $request)
-    {
-        if (Auth::check()) {
-            return response()->json([
-                'message' => 'Usuario autenticado previamente',
-                'user' => Auth::user(),
-            ]);
-        }
-
-        return response()->json([
-            'message' => 'Usuario no autenticado previamente',
         ], 401);
     }
 
@@ -80,9 +76,29 @@ class LoginController extends Controller
         $user = $request->only('name', 'password');
             return response()->json([
                 'success' => true,
-                'user' => $user // Devolvemos los datos del usuario autenticado
+                'message' => 'Devolvemos los datos del usuario autenticado',
+                'user' => $user // 
             ]);
         
+    }
+
+    public function logout(Request $request)
+    {
+            // Verifica si el usuario está autenticado
+    if (!$request->user()) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Usuario no autenticado. No se puede hacer logout',
+        ], 401); // Código 401: Unauthorized
+    }
+
+    // Revoca todos los tokens del usuario
+    $request->user()->tokens()->delete();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Sesión cerrada exitosamente',
+    ]);
     }
 
 }

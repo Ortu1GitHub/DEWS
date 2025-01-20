@@ -64,5 +64,5 @@ Route::prefix('subjects')->controller(SubjectsController::class)->group(function
 
 //Rutas login
 Route::post('login', [LoginController::class, 'login']);
-Route::middleware('auth:sanctum')->get('testLogin', [LoginController::class, 'testLogin']);
 Route::middleware(IsUserAuthenticated::class)->get('loginCustom', [LoginController::class, 'displayDataUserLogged']);
+Route::post('logout', [LoginController::class, 'logout']);
