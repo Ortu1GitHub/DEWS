@@ -85,20 +85,38 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
             // Verifica si el usuario está autenticado
+            /*
     if (!$request->user()) {
         return response()->json([
             'success' => false,
             'message' => 'Usuario no autenticado. No se puede hacer logout',
         ], 401); // Código 401: Unauthorized
+
     }
+    */  $data = $request->only('name', 'password'); 
+        Auth::attempt($data);
+        $user = Auth::user();
+        //var_dump($request);
+        //$user = $request->user();
+        //var_dump(($user));
 
-    // Revoca todos los tokens del usuario
-    $request->user()->tokens()->delete();
-
-    return response()->json([
-        'success' => true,
-        'message' => 'Sesión cerrada exitosamente',
-    ]);
+        /*
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Usuario no autenticado. No se puede hacer logout',
+            ], 401);
+        }
+        */
+    
+        // Revocar todos los tokens del usuario autenticado
+        $user->tokens()->delete();
+    
+        return response()->json([
+            'success' => true,
+            'message' => 'Sesión cerrada exitosamente',
+        ]);
+   
     }
 
 }
