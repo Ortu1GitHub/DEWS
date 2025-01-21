@@ -19,7 +19,7 @@ class SubjectsFactory extends Factory
     {
         return [
             //Asignaturas aleatorias
-            'name' =>fake()->randomElement(['Math', 'Science', 'History', 'Art', 'Biology']), // Cursos ficticios
+            'name' =>fake()->randomElement(['Math', 'Science', 'History', 'Art', 'Biology']),
             // Cursos disponibles : 1 o 2
             'course' => fake()->numberBetween(1, 2),
             'grade' => fake()->numberBetween(1, 10), 
