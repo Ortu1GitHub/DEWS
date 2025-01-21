@@ -16,18 +16,16 @@ class IsUserAuthenticated
      */
     public function handle(Request $request, Closure $next): Response
     {
-       // Si el usuario está autenticado
-       if (Auth::check()) {
+       // Si el usuario está no esta autenticado
+       if (!Auth::guard('api')->check()) {
         return response()->json([
-            'success' => true,
-            'message' => 'Usuario autenticado por middleware custom',
-        ]);
+            'success' => false,
+            'message' => 'Acceso denegado: Usuario no autenticado',
+        ], 401);
+        
     }
+    
+    return $next($request);
 
-    // Si el usuario no está autenticado, responder inmediatamente con un error
-    return response()->json([
-        'success' => false,
-        'message' => 'Acceso denegado: usuario no autenticado',
-    ], 401); // Código 401: Unauthorized
     }
 }

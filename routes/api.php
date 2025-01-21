@@ -62,7 +62,13 @@ Route::prefix('subjects')->controller(SubjectsController::class)->group(function
     Route::get('/{id}/teachers', 'getTeacherBySubject');
 });
 
-//Rutas login
+//Rutas LoginController
+//login y hello debe ser accesibles por cualquier usuario
 Route::post('login', [LoginController::class, 'login']);
-Route::middleware(IsUserAuthenticated::class)->get('loginCustom', [LoginController::class, 'displayDataUserLogged']);
-Route::post('logout', [LoginController::class, 'logout']);
+Route::post('hello', [LoginController::class, 'hello']);
+
+//loginCUstom y logout solo son accesibles para usuarios logados
+Route::middleware(IsUserAuthenticated::class)->group(function () {
+    Route::post('loginCustom', 'displayDataUserLogged');
+    Route::post('logout', 'logout');
+});

@@ -10,9 +10,8 @@ class LoginController extends Controller
 {
     public function login(Request $request)
     {
-
         //Comprobar si el usuario esta logado ya
-        if (Auth::guard('sanctum')->check()) {
+        if (Auth::guard('api')->check()) {
             return response()->json([
                 'success' => true,
                 'message' => 'Usuario ya autenticado',
@@ -24,10 +23,6 @@ class LoginController extends Controller
             'name' => 'required|string',
             'password' => 'required|string',
         ]);
-
-    
-        // Obtener las credenciales del usuario
-        //$credentials = $request->only('name', 'password');
 
         // Intentar autenticar al usuario
         if (Auth::attempt($data)) {
@@ -41,16 +36,8 @@ class LoginController extends Controller
                 ], 500);
             }
 
-            // Intentar generar un token
-            try {
-                $token = $user->createToken('API Token')->plainTextToken;
-            } catch (\Exception $e) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Error al generar el token.',
-                    'error' => $e->getMessage(),
-                ], 500);
-            }
+            // Se genera el token
+            $token = $user->createToken('API Token')->plainTextToken;
 
             // Respuesta exitosa con el token generado
             return response()->json([
@@ -71,43 +58,19 @@ class LoginController extends Controller
 
     public function displayDataUserLogged(Request $request)
     {
-        // Obtener el usuario autenticado
-        //$user = Auth::user();
-        $user = $request->only('name', 'password');
+              // Se obtiene el usuario 
+              $user=Auth::guard('api')->user();
             return response()->json([
                 'success' => true,
                 'message' => 'Devolvemos los datos del usuario autenticado',
                 'user' => $user // 
             ]);
-        
     }
 
     public function logout(Request $request)
     {
-            // Verifica si el usuario está autenticado
-            /*
-    if (!$request->user()) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Usuario no autenticado. No se puede hacer logout',
-        ], 401); // Código 401: Unauthorized
-
-    }
-    */  $data = $request->only('name', 'password'); 
-        Auth::attempt($data);
-        $user = Auth::user();
-        //var_dump($request);
-        //$user = $request->user();
-        //var_dump(($user));
-
-        /*
-        if (!$user) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Usuario no autenticado. No se puede hacer logout',
-            ], 401);
-        }
-        */
+        // Se obtiene el usuario 
+        $user=Auth::guard('api')->user();
     
         // Revocar todos los tokens del usuario autenticado
         $user->tokens()->delete();
@@ -116,7 +79,18 @@ class LoginController extends Controller
             'success' => true,
             'message' => 'Sesión cerrada exitosamente',
         ]);
+
+    }
+
+    public function hello(Request $request)
+    {
+        // Se muestra un mensaje de bienvenida
+        return response()->json([
+            'success' => true,
+            'message' => 'WELCOME TO ORTU API. ENJOY!'
+        ]);
    
     }
+
 
 }
