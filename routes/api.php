@@ -10,6 +10,7 @@ use App\Http\Controllers\TeachersController;
 use App\Http\Controllers\SubjectsController;
 use App\Http\Controllers\LoginController;
 use \App\Http\Middleware\IsUserAuthenticated;
+use App\Http\Controllers\Auth\LoginPassportController;
 
 
 Route::get('/user', function (Request $request) {
@@ -64,6 +65,7 @@ Route::prefix('subjects')->controller(SubjectsController::class)->group(function
 
 //Rutas LoginController
 //login y hello debe ser accesibles por cualquier usuario
+/*
 Route::post('login', [LoginController::class, 'login']);
 Route::post('hello', [LoginController::class, 'hello']);
 
@@ -72,3 +74,10 @@ Route::middleware(IsUserAuthenticated::class)->group(function () {
     Route::post('loginCustom', 'displayDataUserLogged');
     Route::post('logout', 'logout');
 });
+*/
+
+//Rutas LoginPassportController
+Route::post('loginPassport', [LoginPassportController::class, 'register']);
+Route::post('loginPassport2', [LoginPassportController::class, 'loginEmailOrName']);
+Route::middleware('api')->get('userPassport', [LoginPassportController::class, 'getUserData']);
+Route::middleware('api')->post('logoutPassport', [LoginPassportController::class, 'logout']);
