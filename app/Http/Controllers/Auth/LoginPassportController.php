@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 class LoginPassportController extends Controller
 {
@@ -31,10 +32,10 @@ class LoginPassportController extends Controller
         ]);
 
         // Generar el token para el usuario
-        $token = $user->createToken('JSON token')->accessToken;
+        //$token = $user->createToken('JSON token')->plainTextToken;
 
-        // Retornar respuesta con el token
-        return response()->json(['token' => $token], 201);
+    // Retornar respuesta con el token
+        return response()->json(['Usuario registrado' => $user], 201);
     }
 
     public function loginEmailOrName(Request $request)
@@ -65,13 +66,9 @@ class LoginPassportController extends Controller
                 
                     // Generar el token de acceso con Passport
                     try {
-                        $token = $user->createToken('User Access Token')->accessToken;
+                        $token = $user->createToken('User Access Token')->plainTextToken;
                     } catch (\Exception $e) {
                         return response()->json(['error' => 'No se pudo generar el token', 'message' => $e->getMessage()], 500);
-                    }
-                
-                    if (!$token) {
-                        return response()->json(['error' => 'Token no generado correctamente'], 500);
                     }
                 
                     // Retornar respuesta con el token
@@ -87,37 +84,38 @@ class LoginPassportController extends Controller
         ], 200);
     }
 
-    /*
     public function logout(Request $request)
     {
-        // Obtener el usuario autenticado
-        $user = $request->user();
-
-        if ($user) {
-            // Revocar todos los tokens del usuario
-            $user->tokens()->delete();
-
-            return response()->json(['message' => 'Cierre de sesión exitoso. Todos los tokens han sido revocados.'], 200);
+        // Obtener el token recibido
+        $token = $request->bearerToken();
+        Log::info('Token recibido: ', ['token' => $token]);
+    
+            // Verificar si el token es válido (buscar por el valor completo del token)
+        $tokenRecord = \Laravel\Sanctum\PersonalAccessToken::where('id', $token)->first();
+    
+        if (!$tokenRecord) {
+            Log::error('Token no encontrado en la base de datos', ['token' => $token]);
+            return response()->json(['error' => 'Token inválido o no encontrado'], 401);
         }
-
-        return response()->json(['error' => 'No se pudo procesar la solicitud'], 400);
+    
+        // Obtener el usuario asociado al token
+        $user = $tokenRecord->user;
+        Log::info('Usuario asociado al token:', ['user_id' => $user ? $user->id : 'No autenticado']);
+    
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no autenticado o token inválido'], 401);
+        }
+    
+        // Revocar todos los tokens del usuario
+        try {
+            $user->tokens->each(function ($token) {
+                $token->delete();
+            });
+    
+            return response()->json(['message' => 'Cierre de sesión exitoso. Todos los tokens han sido revocados.'], 200);
+        } catch (\Exception $e) {
+            Log::error('Error al revocar los tokens', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'Error al cerrar sesión', 'message' => $e->getMessage()], 500);
+        }
     }
-    */
-
-    public function logout(Request $request)
-{
-    $user = $request->user(); // Obtenemos el usuario autenticado
-
-    if (!$user) {
-        return response()->json(['error' => 'Usuario no autenticado o token inválido'], 401);
-    }
-
-    // Revocar todos los tokens del usuario
-    try {
-        $user->tokens()->delete();
-        return response()->json(['message' => 'Cierre de sesión exitoso. Todos los tokens han sido revocados.'], 200);
-    } catch (\Exception $e) {
-        return response()->json(['error' => 'Error al cerrar sesión', 'message' => $e->getMessage()], 500);
-    }
-}
 }

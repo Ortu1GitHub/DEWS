@@ -77,7 +77,7 @@ Route::middleware(IsUserAuthenticated::class)->group(function () {
 */
 
 //Rutas LoginPassportController
-Route::post('loginPassport', [LoginPassportController::class, 'register']);
-Route::post('loginPassport2', [LoginPassportController::class, 'loginEmailOrName']);
+Route::post('register', [LoginPassportController::class, 'register']);
+Route::post('loginPassport', [LoginPassportController::class, 'loginEmailOrName']);
 Route::middleware('api')->get('userPassport', [LoginPassportController::class, 'getUserData']);
 Route::middleware('api')->post('logoutPassport', [LoginPassportController::class, 'logout']);
