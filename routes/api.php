@@ -12,7 +12,6 @@ use App\Http\Controllers\LoginController;
 use \App\Http\Middleware\IsUserAuthenticated;
 use App\Http\Controllers\Auth\LoginPassportController;
 
-
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -79,5 +78,5 @@ Route::middleware(IsUserAuthenticated::class)->group(function () {
 //Rutas LoginPassportController
 Route::post('register', [LoginPassportController::class, 'register']);
 Route::post('loginPassport', [LoginPassportController::class, 'loginEmailOrName']);
-Route::middleware('api')->get('userPassport', [LoginPassportController::class, 'getUserData']);
+Route::middleware('api')->post('userPassport', [LoginPassportController::class, 'getUserData']);
 Route::middleware('api')->post('logoutPassport', [LoginPassportController::class, 'logout']);

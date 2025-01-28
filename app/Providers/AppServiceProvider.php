@@ -13,6 +13,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //Passport::routes(); // Registra las rutas de Passport
+        //$this->registerPolicies();
+
+       // Registra las rutas de Passport
     }
 
     /**
@@ -21,5 +24,6 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         //
+        Passport::ignoreRoutes();
     }
 }
